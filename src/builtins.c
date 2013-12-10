@@ -1026,6 +1026,7 @@ void jl_init_primitives(void)
     add_builtin("Expr", (jl_value_t*)jl_expr_type);
     add_builtin("LineNumberNode", (jl_value_t*)jl_linenumbernode_type);
     add_builtin("LabelNode", (jl_value_t*)jl_labelnode_type);
+    add_builtin("GotoIfNotNode", (jl_value_t*)jl_gotoifnotnode_type);
     add_builtin("GotoNode", (jl_value_t*)jl_gotonode_type);
     add_builtin("QuoteNode", (jl_value_t*)jl_quotenode_type);
     add_builtin("TopNode", (jl_value_t*)jl_topnode_type);
