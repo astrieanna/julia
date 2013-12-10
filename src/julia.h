@@ -373,6 +373,7 @@ extern jl_datatype_t *jl_symbolnode_type;
 extern jl_datatype_t *jl_getfieldnode_type;
 extern jl_datatype_t *jl_linenumbernode_type;
 extern jl_datatype_t *jl_labelnode_type;
+extern jl_datatype_t *jl_gotoifnotnode_type;
 extern jl_datatype_t *jl_gotonode_type;
 extern jl_datatype_t *jl_quotenode_type;
 extern jl_datatype_t *jl_newvarnode_type;

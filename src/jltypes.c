@@ -2754,6 +2754,11 @@ void jl_init_types(void)
                         jl_tuple(1, jl_long_type), 0, 0);
     jl_labelnode_type->fptr = jl_f_default_ctor_1;
 
+    jl_gotoifnotnode_type = 
+        jl_new_datatype(jl_symbol("GotoIfNotNode"), jl_any_type, jl_null,
+                        jl_tuple(2, jl_symbol("condition"), jl_symbol("label")),
+                        jl_tuple(2, jl_any_type, jl_long_type), 0, 0);
+
     jl_gotonode_type =
         jl_new_datatype(jl_symbol("GotoNode"), jl_any_type, jl_null,
                         jl_tuple(1, jl_symbol("label")),
@@ -2880,6 +2885,7 @@ void jl_init_types(void)
     jl_compute_field_offsets(jl_expr_type);
     jl_compute_field_offsets(jl_linenumbernode_type);
     jl_compute_field_offsets(jl_labelnode_type);
+    jl_compute_field_offsets(jl_gotoifnotnode_type);
     jl_compute_field_offsets(jl_gotonode_type);
     jl_compute_field_offsets(jl_quotenode_type);
     jl_compute_field_offsets(jl_topnode_type);
