@@ -305,6 +305,12 @@ static jl_value_t *scm_to_julia_(value_t e, int eo)
                     return jl_new_struct(jl_labelnode_type,
                                          scm_to_julia_(car_(e),0));
                 }
+                if (sym == goto_ifnot_sym) {
+                    return jl_new_struct(jl_gotoifnotnode_type,
+                                         scm_to_julia_(car_(e),0),
+                                         scm_to_julia_(car_(cdr_(e)),0));
+                    //this is likely a bad way of handling having 2 args
+                }
                 if (sym == goto_sym) {
                     return jl_new_struct(jl_gotonode_type,
                                          scm_to_julia_(car_(e),0));
