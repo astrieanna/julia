@@ -248,6 +248,13 @@ trailing_ones(x::Integer) = trailing_zeros(~x)
 
 const _inttypes = (Bool, Int8, Uint8, Int16, Uint16, Int32, Uint32, Char,
                    Int64, Uint64, Int128, Uint128)
+function foo()
+  for i in (1,)
+    println(i)
+  end
+end
+
+foo()
 
 for to in _inttypes, from in _inttypes
     if !(to===from) && !(to===Bool)

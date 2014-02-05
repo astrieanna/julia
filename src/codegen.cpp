@@ -423,12 +423,15 @@ static Function *to_function(jl_lambda_info_t *li, bool cstyle)
     FPM->run(*f);
     //n_compile++;
     // print out the function's LLVM code
-    //ios_printf(ios_stderr, "%s:%d\n",
-    //           ((jl_sym_t*)li->file)->name, li->line);
-    //if (verifyFunction(*f,PrintMessageAction)) {
-    //    f->dump();
-    //    abort();
-    //}
+    ios_printf(ios_stderr, "%s:%d\n",
+               ((jl_sym_t*)li->file)->name, li->line);
+    if (strncmp("int.jl",((jl_sym_t*)li->file)->name,6) == 0) {
+        ios_printf(ios_stderr, "%s:%s\n",
+               ((jl_sym_t*)((jl_module_t*)li->module)->name)->name,
+               ((jl_sym_t*)li->name)->name);
+        f->dump();
+        //abort();
+    }
     if (old != NULL) {
         builder.SetInsertPoint(old);
         builder.SetCurrentDebugLocation(olddl);
