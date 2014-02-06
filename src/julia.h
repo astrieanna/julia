@@ -400,6 +400,8 @@ extern uv_lib_t *jl_crtdll_handle;
 extern uv_lib_t *jl_winsock_handle;
 #endif
 
+void jl_(void *jl_value);
+
 // some important symbols
 extern jl_sym_t *call_sym;
 extern jl_sym_t *call1_sym;
@@ -516,7 +518,7 @@ extern jl_sym_t *boundscheck_sym; extern jl_sym_t *copyast_sym;
 #define jl_is_getfieldnode(v)  jl_typeis(v,jl_getfieldnode_type)
 #define jl_is_labelnode(v)   jl_typeis(v,jl_labelnode_type)
 #define jl_is_gotonode(v)    jl_typeis(v,jl_gotonode_type)
-#define jl_is_gotoifnotnode(v)    jl_typeis(v,jl_gotonode_type)
+#define jl_is_gotoifnotnode(v)    jl_typeis(v,jl_gotoifnotnode_type)
 #define jl_is_quotenode(v)   jl_typeis(v,jl_quotenode_type)
 #define jl_is_newvarnode(v)  jl_typeis(v,jl_newvarnode_type)
 #define jl_is_topnode(v)     jl_typeis(v,jl_topnode_type)
