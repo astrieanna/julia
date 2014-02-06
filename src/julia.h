@@ -374,6 +374,7 @@ extern jl_datatype_t *jl_symbolnode_type;
 extern jl_datatype_t *jl_getfieldnode_type;
 extern jl_datatype_t *jl_linenumbernode_type;
 extern jl_datatype_t *jl_labelnode_type;
+extern jl_datatype_t *jl_gotoifnotnode_type;
 extern jl_datatype_t *jl_gotonode_type;
 extern jl_datatype_t *jl_quotenode_type;
 extern jl_datatype_t *jl_newvarnode_type;
@@ -399,6 +400,8 @@ extern uv_lib_t *jl_kernel32_handle;
 extern uv_lib_t *jl_crtdll_handle;
 extern uv_lib_t *jl_winsock_handle;
 #endif
+
+void jl_(void *jl_value);
 
 // some important symbols
 extern jl_sym_t *call_sym;
@@ -462,6 +465,8 @@ extern jl_sym_t *boundscheck_sym; extern jl_sym_t *copyast_sym;
 #define jl_linenode_line(x) (((ptrint_t*)x)[1])
 #define jl_labelnode_label(x) (((ptrint_t*)x)[1])
 #define jl_gotonode_label(x) (((ptrint_t*)x)[1])
+#define jl_gotoifnotnode_cond(x) (jl_fieldref(x,0)) 
+#define jl_gotoifnotnode_label(x) (((ptrint_t*)x)[1])
 #define jl_getfieldnode_val(s) (jl_fieldref(s,0))
 #define jl_getfieldnode_name(s) ((jl_sym_t*)jl_fieldref(s,1))
 #define jl_getfieldnode_type(s) (jl_fieldref(s,2))
@@ -514,6 +519,7 @@ extern jl_sym_t *boundscheck_sym; extern jl_sym_t *copyast_sym;
 #define jl_is_getfieldnode(v)  jl_typeis(v,jl_getfieldnode_type)
 #define jl_is_labelnode(v)   jl_typeis(v,jl_labelnode_type)
 #define jl_is_gotonode(v)    jl_typeis(v,jl_gotonode_type)
+#define jl_is_gotoifnotnode(v)    jl_typeis(v,jl_gotoifnotnode_type)
 #define jl_is_quotenode(v)   jl_typeis(v,jl_quotenode_type)
 #define jl_is_newvarnode(v)  jl_typeis(v,jl_newvarnode_type)
 #define jl_is_topnode(v)     jl_typeis(v,jl_topnode_type)

@@ -424,12 +424,15 @@ static Function *to_function(jl_lambda_info_t *li, bool cstyle)
     FPM->run(*f);
     //n_compile++;
     // print out the function's LLVM code
-    //ios_printf(ios_stderr, "%s:%d\n",
-    //           ((jl_sym_t*)li->file)->name, li->line);
-    //if (verifyFunction(*f,PrintMessageAction)) {
-    //    f->dump();
-    //    abort();
-    //}
+    ios_printf(ios_stderr, "%s:%d\n",
+               ((jl_sym_t*)li->file)->name, li->line);
+    if (strncmp("int.jl",((jl_sym_t*)li->file)->name,6) == 0) {
+        ios_printf(ios_stderr, "%s:%s\n",
+               ((jl_sym_t*)((jl_module_t*)li->module)->name)->name,
+               ((jl_sym_t*)li->name)->name);
+        f->dump();
+        //abort();
+    }
     if (old != NULL) {
         builder.SetInsertPoint(old);
         builder.SetCurrentDebugLocation(olddl);
@@ -2278,6 +2281,16 @@ static Value *emit_expr(jl_value_t *expr, jl_codectx_t *ctx, bool isboxed,
         }
         return NULL;
     }
+    else if (jl_is_gotoifnotnode(expr)) {
+        jl_value_t *cond = jl_gotoifnotnode_cond(expr);
+        int labelname = jl_gotoifnotnode_label(expr);
+        Value *isfalse = emit_condition(cond, "if", ctx);
+        BasicBlock *ifso = BasicBlock::Create(getGlobalContext(), "if", ctx->f);
+        BasicBlock *ifnot = (*ctx->labels)[labelname];
+        assert(ifnot);
+        builder.CreateCondBr(isfalse, ifnot, ifso);
+        builder.SetInsertPoint(ifso);
+    }
     else if (jl_is_getfieldnode(expr)) {
         return emit_getfield(jl_fieldref(expr,0),
                              (jl_sym_t*)jl_fieldref(expr,1), ctx);
@@ -2337,18 +2350,8 @@ static Value *emit_expr(jl_value_t *expr, jl_codectx_t *ctx, bool isboxed,
     // this is object-disoriented.
     // however, this is a good way to do it because it should *not* be easy
     // to add new node types.
-    if (head == goto_ifnot_sym) {
-        jl_value_t *cond = args[0];
-        int labelname = jl_unbox_long(args[1]);
-        Value *isfalse = emit_condition(cond, "if", ctx);
-        BasicBlock *ifso = BasicBlock::Create(getGlobalContext(), "if", ctx->f);
-        BasicBlock *ifnot = (*ctx->labels)[labelname];
-        assert(ifnot);
-        builder.CreateCondBr(isfalse, ifnot, ifso);
-        builder.SetInsertPoint(ifso);
-    }
 
-    else if (head == call_sym || head == call1_sym) {
+    if (head == call_sym || head == call1_sym) {
         return emit_call(args, jl_array_dim0(ex->args), ctx, (jl_value_t*)ex);
     }
 

@@ -758,6 +758,7 @@ void NORETURN throw_internal(jl_value_t *e)
 // record backtrace and raise an error
 DLLEXPORT void jl_throw(jl_value_t *e)
 {
+    gdbbacktrace();
     assert(e != NULL);
     record_backtrace();
     throw_internal(e);
