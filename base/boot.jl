@@ -90,6 +90,11 @@
 #    label::Int
 #end
 
+#immutable GotoIfNotNode
+#   condition::Any
+#   label::Int
+#end
+
 #immutable GotoNode
 #    label::Int
 #end
